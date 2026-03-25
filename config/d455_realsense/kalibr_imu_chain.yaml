@@ -1,0 +1,43 @@
+%YAML:1.0
+# D455 built-in IMU (RealSense driver /camera/camera/imu)
+# Noise parameters referenced from rs_d455, suitable for D455 built-in MEMS IMU
+# D455 内置 IMU (RealSense 驱动 /camera/camera/imu)
+# 噪声参数参考 rs_d455，适用于 D455 内置 MEMS IMU
+
+imu0:
+  T_i_b:
+    - [1.0, 0.0, 0.0, 0.0]
+    - [0.0, 1.0, 0.0, 0.0]
+    - [0.0, 0.0, 1.0, 0.0]
+    - [0.0, 0.0, 0.0, 1.0]
+
+  accelerometer_noise_density: 0.00207649074
+  accelerometer_random_walk: 0.00041327852
+  gyroscope_noise_density: 0.00020544166
+  gyroscope_random_walk: 0.00001110622
+
+  rostopic: /camera/camera/imu
+  time_offset: 0.0
+  update_rate: 200
+
+  model: "kalibr"
+  Tw:
+    - [ 1.0, 0.0, 0.0 ]
+    - [ 0.0, 1.0, 0.0 ]
+    - [ 0.0, 0.0, 1.0 ]
+  R_IMUtoGYRO:
+    - [ 1.0, 0.0, 0.0 ]
+    - [ 0.0, 1.0, 0.0 ]
+    - [ 0.0, 0.0, 1.0 ]
+  Ta:
+    - [ 1.0, 0.0, 0.0 ]
+    - [ 0.0, 1.0, 0.0 ]
+    - [ 0.0, 0.0, 1.0 ]
+  R_IMUtoACC:
+    - [ 1.0, 0.0, 0.0 ]
+    - [ 0.0, 1.0, 0.0 ]
+    - [ 0.0, 0.0, 1.0 ]
+  Tg:
+    - [ 0.0, 0.0, 0.0 ]
+    - [ 0.0, 0.0, 0.0 ]
+    - [ 0.0, 0.0, 0.0 ]

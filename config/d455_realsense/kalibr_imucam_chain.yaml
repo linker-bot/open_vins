@@ -1,0 +1,20 @@
+%YAML:1.0
+# D455 infrared infra1 (RealSense driver /camera/camera/infra1/image_rect_raw)
+# Resolution 640x480. Intrinsics provided by camera firmware, auto-written by update_infra1_intrinsics.py
+# D455 红外 infra1 (RealSense 驱动 /camera/camera/infra1/image_rect_raw)
+# 分辨率 640x480。内参由相机固件提供，运行 update_infra1_intrinsics.py 自动写入
+
+cam0:
+  T_cam_imu:
+    - [0.9999654398038452, 0.007342326779113337, -0.003899927610975742, -0.027534314618518095]
+    - [-0.0073452195116216765, 0.9999727585590525, -0.0007279355223411334, -0.0030587146933711722]
+    - [0.0038944766308488753, 0.0007565561891287445, 0.9999921303062861, -0.023605118842939803]
+    - [0.0, 0.0, 0.0, 1.0]
+  cam_overlaps: []
+  camera_model: pinhole
+  distortion_coeffs: [0.0, 0.0, 0.0, 0.0]
+  distortion_model: radtan
+  intrinsics: [390.9538269042969, 390.9538269042969, 321.2491149902344, 242.20843505859375]
+  resolution: [640, 480]
+  rostopic: /camera/camera/infra1/image_rect_raw
+  timeshift_cam_imu: 0.002524377913673846

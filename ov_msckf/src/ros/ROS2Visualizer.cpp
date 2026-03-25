@@ -185,9 +185,14 @@ void ROS2Visualizer::setup_subscribers(std::shared_ptr<ov_core::YamlParser> pars
     _node->get_parameter("topic_camera" + std::to_string(1), cam_topic1);
     parser->parse_external("relative_config_imucam", "cam" + std::to_string(0), "rostopic", cam_topic0);
     parser->parse_external("relative_config_imucam", "cam" + std::to_string(1), "rostopic", cam_topic1);
-    // Create sync filter (they have unique pointers internally, so we have to use move logic here...)
-    auto image_sub0 = std::make_shared<message_filters::Subscriber<sensor_msgs::msg::Image>>(_node, cam_topic0);
-    auto image_sub1 = std::make_shared<message_filters::Subscriber<sensor_msgs::msg::Image>>(_node, cam_topic1);
+
+    // Create sync filter (SensorDataQoS=BestEffort，与 RealSense 等传感器驱动兼容)
+    rclcpp::QoS qos_sensor = rclcpp::SensorDataQoS();
+    auto image_sub0 = std::make_shared<message_filters::Subscriber<sensor_msgs::msg::Image>>(
+        _node, cam_topic0, qos_sensor.get_rmw_qos_profile());
+    auto image_sub1 = std::make_shared<message_filters::Subscriber<sensor_msgs::msg::Image>>(
+        _node, cam_topic1, qos_sensor.get_rmw_qos_profile());
+
     auto sync = std::make_shared<message_filters::Synchronizer<sync_pol>>(sync_pol(10), *image_sub0, *image_sub1);
     sync->registerCallback(std::bind(&ROS2Visualizer::callback_stereo, this, std::placeholders::_1, std::placeholders::_2, 0, 1));
     // sync->registerCallback([](const sensor_msgs::msg::Image::SharedPtr msg0, const sensor_msgs::msg::Image::SharedPtr msg1)
@@ -207,11 +212,12 @@ void ROS2Visualizer::setup_subscribers(std::shared_ptr<ov_core::YamlParser> pars
       _node->declare_parameter<std::string>("topic_camera" + std::to_string(i), "/cam" + std::to_string(i) + "/image_raw");
       _node->get_parameter("topic_camera" + std::to_string(i), cam_topic);
       parser->parse_external("relative_config_imucam", "cam" + std::to_string(i), "rostopic", cam_topic);
-      // create subscriber
-      // auto sub = _node->create_subscription<sensor_msgs::msg::Image>(
-      //    cam_topic, rclcpp::SensorDataQoS(), std::bind(&ROS2Visualizer::callback_monocular, this, std::placeholders::_1, i));
+
+      // create subscriber (SensorDataQoS=BestEffort，与 RealSense 等传感器驱动兼容)
       auto sub = _node->create_subscription<sensor_msgs::msg::Image>(
-          cam_topic, 10, [this, i](const sensor_msgs::msg::Image::SharedPtr msg0) { callback_monocular(msg0, i); });
+        cam_topic, rclcpp::SensorDataQoS(),
+        [this, i](const sensor_msgs::msg::Image::SharedPtr msg0) { callback_monocular(msg0, i); });
+
       subs_cam.push_back(sub);
       PRINT_INFO("subscribing to cam (mono): %s\n", cam_topic.c_str());
     }

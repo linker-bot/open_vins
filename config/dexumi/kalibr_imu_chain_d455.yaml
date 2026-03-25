@@ -1,0 +1,54 @@
+%YAML:1.0
+
+# ==================================================================
+# RealSense D455 built-in Inertial Measurement Unit (IMU) calibration parameters
+# RealSense D455 内置惯性测量单元 (IMU) 标定参数
+#
+# Noise parameter notes / 噪声参数说明:
+#   The following parameters are D455 official reference values (multiplied by ×10 safety factor),
+#   suitable for OpenVINS VIO online operation.
+#   It is recommended to use imu_allan_variance.py --d455 for actual measurement to obtain more accurate parameters.
+#   以下参数为 D455 官方参考值（已乘以 ×10 安全系数），
+#   适用于 OpenVINS VIO 在线运行。
+#   建议使用 imu_allan_variance.py --d455 进行实测以获得更精准参数。
+# ==================================================================
+
+imu0:
+  T_i_b:
+    - [1.0, 0.0, 0.0, 0.0]
+    - [0.0, 1.0, 0.0, 0.0]
+    - [0.0, 0.0, 1.0, 0.0]
+    - [0.0, 0.0, 0.0, 1.0]
+
+  # D455 built-in Bosch BMI055/085 typical noise parameters (×10 safety factor)
+  # D455 内置 Bosch BMI055/085 典型噪声参数 (×10 安全系数)
+  accelerometer_noise_density: 9.139798e-03   # [ m / s^2 / sqrt(Hz) ]
+  accelerometer_random_walk:   2.539637e-03   # [ m / s^3 / sqrt(Hz) ]
+  gyroscope_noise_density:     1.692546e-03   # [ rad / s / sqrt(Hz) ]
+  gyroscope_random_walk:       4.048895e-05   # [ rad / s^2 / sqrt(Hz)]
+
+  rostopic: /camera/camera/imu
+  time_offset: 0.0
+  update_rate: 200.0
+
+  model: "kalibr"
+  Tw:
+    - [ 1.0, 0.0, 0.0 ]
+    - [ 0.0, 1.0, 0.0 ]
+    - [ 0.0, 0.0, 1.0 ]
+  R_IMUtoGYRO:
+    - [ 1.0, 0.0, 0.0 ]
+    - [ 0.0, 1.0, 0.0 ]
+    - [ 0.0, 0.0, 1.0 ]
+  Ta:
+    - [ 1.0, 0.0, 0.0 ]
+    - [ 0.0, 1.0, 0.0 ]
+    - [ 0.0, 0.0, 1.0 ]
+  R_IMUtoACC:
+    - [ 1.0, 0.0, 0.0 ]
+    - [ 0.0, 1.0, 0.0 ]
+    - [ 0.0, 0.0, 1.0 ]
+  Tg:
+    - [ 0.0, 0.0, 0.0 ]
+    - [ 0.0, 0.0, 0.0 ]
+    - [ 0.0, 0.0, 0.0 ]
